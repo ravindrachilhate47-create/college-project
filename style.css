@@ -1,0 +1,88 @@
+:root {
+    --primary: #4f46e5;
+    --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { background-color: var(--bg-main); color: var(--text-dark); }
+
+/* Header Elements layout */
+header { background-color: var(--bg-card); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 150; }
+.header-container { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.logo { font-size: 22px; font-weight: 700; }
+.logo span { color: var(--primary); }
+
+.search-wrapper { flex: 1; max-width: 380px; }
+.search-wrapper input { width: 100%; padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-color); background: #f1f5f9; outline: none; }
+
+nav { display: flex; align-items: center; }
+nav a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-weight: 500; font-size: 14px; }
+nav a:hover, nav a.active { color: var(--primary); }
+
+/* GMAIL STYLE INTERACTIVE DROPDOWN MECHANICS */
+.profile-dropdown-container { position: relative; margin-left: 25px; }
+.avatar-nav-btn { width: 36px; height: 36px; background: var(--primary-gradient); color: white; font-weight: 600; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+.dropdown-menu-box { display: none; position: absolute; right: 0; top: 45px; background: white; border: 1px solid var(--border-color); border-radius: 12px; width: 260px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); padding: 15px; z-index: 200; }
+.dropdown-header { text-align: center; padding: 10px 0; }
+.avatar-large { width: 55px; height: 55px; background: var(--primary-gradient); color: white; font-size: 22px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; text-transform: uppercase; }
+.dropdown-header h4 { font-size: 15px; color: var(--text-dark); margin-bottom: 2px; text-transform: capitalize; }
+.dropdown-header p { font-size: 12px; color: var(--text-muted); }
+
+.menu-divider { border: 0; border-top: 1px solid var(--border-color); margin: 10px 0; }
+.menu-item { display: block; padding: 8px 12px; color: #334155; text-decoration: none; font-size: 13px; font-weight: 500; border-radius: 6px; transition: background 0.2s; }
+.menu-item:hover { background: #f1f5f9; color: var(--primary); }
+.logout-item { color: #ef4444 !important; font-weight: 600; }
+.logout-item:hover { background: #fee2e2 !important; }
+
+/* Login Custom Layout */
+.login-body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #0f172a; }
+.login-card { background: white; padding: 35px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); width: 100%; max-width: 400px; }
+
+/* Filter Pills Menu row */
+.category-bar { max-width: 1200px; margin: 20px auto 0 auto; padding: 0 20px; display: flex; gap: 10px; overflow-x: auto; }
+.cat-pill { background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+.cat-pill.active { background: var(--primary-gradient); color: white; border: none; }
+
+/* Main Grid structure layouts */
+.main-layout { max-width: 1200px; margin: 25px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+@media (max-width: 768px) { .main-layout { grid-template-columns: 1fr; } }
+.container { background: white; padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); }
+
+/* Feed card systems graphics items */
+.blog-card { background: white; border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+.blog-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; }
+.badge { display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: 600; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px; }
+.badge-tech { background: #e0f2fe; color: #0369a1; }
+.badge-finance { background: #dcfce7; color: #15803d; }
+.badge-economics { background: #fef3c7; color: #b45309; }
+.badge-politics { background: #fee2e2; color: #b91c1c; }
+.badge-industries { background: #f3e8ff; color: #6b21a8; }
+
+.action-bar { display: flex; gap: 15px; margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--border-color); }
+.action-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 5px; }
+.action-btn:hover { color: var(--primary); }
+
+.comment-box { margin-top: 12px; background: #f8fafc; padding: 12px; border-radius: 8px; display: none; }
+.comment-input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.comment-input-row input { flex: 1; padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; }
+.comment-list { font-size: 12px; color: #475569; display: flex; flex-direction: column; gap: 4px; max-height: 100px; overflow-y: auto; }
+.single-comment { background: #edf2f7; padding: 4px 8px; border-radius: 4px; }
+
+.upload-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); border-top: 5px solid #4f46e5; }
+form label { display: block; margin-top: 12px; margin-bottom: 4px; font-size: 12px; font-weight: 600; }
+form input, form select, form textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: #f8fafc; outline: none; }
+.char-counter { font-size: 11px; color: var(--text-muted); text-align: right; margin-top: 2px; }
+
+/* Modals views properties overlays popup windows */
+.modal { display: none; position: fixed; z-index: 250; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
+.modal-content { background-color: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; position: relative; max-height: 85vh; overflow-y: auto; }
+.close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; font-weight: bold; cursor: pointer; color: var(--text-muted); }
+
+.btn-primary-gradient { width: 100%; background: var(--primary-gradient); color: white; padding: 11px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; border: none; }
+footer { text-align: center; padding: 25px; color: var(--text-muted); border-top: 1px solid var(--border-color); background: white; margin-top: 40px; font-size: 13px; }

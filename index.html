@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaBlog Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-grad: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            --bg-base: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        [data-theme="dark"] {
+            --bg-base: #0f172a;
+            --card-bg: #1e293b;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: background-color 0.2s, border-color 0.2s; }
+        body { background-color: var(--bg-base); color: var(--text-dark); min-height: 100vh; padding-bottom: 60px; }
+
+        nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0; z-index: 100;
+        }
+        .logo { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); cursor: pointer; }
+        .logo span { color: #6366f1; }
+        
+        .nav-center { flex: 1; max-width: 500px; margin: 0 40px; }
+        .search-bar { width: 100%; padding: 10px 20px; border: 1px solid var(--border-color); border-radius: 25px; outline: none; background: var(--bg-base); color: var(--text-dark); font-size: 0.9rem; }
+        
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.95rem; cursor: pointer; }
+        .nav-link:hover { color: var(--primary); }
+
+        .theme-toggle-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 5px; }
+
+        .avatar {
+            width: 42px; height: 42px; background: var(--primary-grad); color: white;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-weight: 600; cursor: pointer; position: relative;
+        }
+
+        .dropdown {
+            position: absolute; top: 52px; right: 0; background: var(--card-bg);
+            border: 1px solid var(--border-color); border-radius: 12px; width: 240px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: none; padding: 15px; z-index: 200;
+            color: var(--text-dark);
+        }
+        .dropdown .profile-info { display: flex; flex-direction: column; gap: 3px; margin-bottom: 10px; padding: 0 5px; text-align: left; }
+        .dropdown button {
+            width: 100%; text-align: left; padding: 10px; background: none;
+            border: none; color: #ef4444; font-weight: 600; cursor: pointer; margin-top: 5px; border-radius: 6px;
+        }
+        .dropdown button:hover { background: rgba(239, 68, 68, 0.1); }
+
+
+        .page-container { max-width: 1300px; margin: 0 auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+
+       
+        .ticker-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid #22c55e;
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            width: 100%;
+        }
+        .ticker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .ticker-title { color: #22c55e; display: flex; align-items: center; gap: 5px; }
+        .ticker-time { color: var(--text-muted); font-weight: 500; }
+        .ticker-wrap {
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+        }
+        .ticker-container {
+            display: flex;
+            gap: 30px;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
+        .ticker-container:hover { animation-play-state: paused; cursor: pointer; }
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .tick-up { color: #22c55e; }
+        .tick-down { color: #ef4444; }
+        .tick-sep { color: var(--border-color); font-weight: 300; margin-left: 15px; }
+
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        .main-workspace { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start; width: 100%; }
+
+        .feed-side { display: flex; flex-direction: column; gap: 25px; }
+        .filter-lane { display: flex; gap: 12px; margin-bottom: 5px; overflow-x: auto; padding-bottom: 5px; }
+        .cat-pill { padding: 10px 20px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.9rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--text-dark); white-space: nowrap; }
+        .cat-pill.active { background: #4f46e5; color: white; border-color: #4f46e5; }
+
+        .feed-title { font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
+
+        .blog-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.01); text-align: left; }
+        .blog-img { width: 100%; height: 260px; object-fit: cover; border-radius: 12px; margin-bottom: 16px; }
+        
+        .badge { display: inline-block; padding: 6px 12px; font-size: 0.75rem; font-weight: 700; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .badge-tech { background: #e0f2fe; color: #0369a1; }
+        .badge-finance { background: #fef3c7; color: #b45309; }
+        .badge-economics { background: #dcfce7; color: #15803d; }
+        .badge-politics { background: #f3e8ff; color: #6b21a8; }
+        .badge-industries { background: #fae8ff; color: #86198f; }
+        .badge-default { background: var(--bg-base); color: var(--text-muted); }
+        
+        .blog-card h3 { font-size: 1.4rem; color: var(--text-dark); font-weight: 700; margin-bottom: 10px; line-height: 1.3; }
+        .blog-card .excerpt { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+        
+        .action-bar { display: flex; gap: 20px; padding-top: 14px; border-top: 1px solid var(--border-color); }
+        .action-btn { background: none; border: none; cursor: pointer; font-size: 0.9rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .action-btn:hover { color: var(--primary); }
+
+        .comment-section { margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color); display: none; }
+        .comment-form { display: flex; gap: 10px; margin-bottom: 12px; }
+        .comment-form input { flex: 1; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-base); color: var(--text-dark); outline: none; }
+        .comment-form button { padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .comments-list { display: flex; flex-direction: column; gap: 6px; max-height: 150px; overflow-y: auto; }
+        .comment-item { padding: 8px; background: var(--bg-base); border-radius: 6px; font-size: 0.85rem; color: var(--text-dark); border: 1px solid var(--border-color); }
+
+        
+        .publish-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; border-top: 4px solid var(--primary); text-align: left; }
+        .publish-box h2 { font-size: 1.3rem; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+        .publish-box p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
+        
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
+        .publish-box input, .publish-box select, .publish-box textarea {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; background: var(--bg-base); color: var(--text-dark); font-size: 0.9rem;
+        }
+        .publish-box textarea { height: 130px; resize: none; }
+        
+        .form-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+        .counter-lbl { font-size: 0.8rem; color: var(--text-muted); }
+        .btn-submit { width: 100%; padding: 14px; background: var(--primary-grad); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.7); z-index:1000; display:none; justify-content:center; align-items:center; padding: 20px; }
+        .modal-box { background:var(--card-bg); color:var(--text-dark); max-width:650px; width:100%; padding:30px; border-radius:16px; position:relative; max-height: 80vh; overflow-y: auto; border: 1px solid var(--border-color); }
+        .close-modal { position:absolute; top:15px; right:20px; font-size:1.6rem; cursor:pointer; background:none; border:none; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo" onclick="goHome()">Mega<span>Blog</span></div>
+        <div class="nav-center">
+            <input type="text" id="globalSearch" class="search-bar" placeholder="🔍 Search articles globally..." oninput="handleSearch()">
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌓</button>
+            <a class="nav-link" onclick="goHome()">Home</a>
+            <a class="nav-link" onclick="alert('MegaBlog Portal v1.0 - Academic MySQL Verified Pipeline.')">About Me</a>
+            
+            <div class="avatar" id="navAvatarBtn" onclick="toggleDropdown()">R
+                <div class="dropdown" id="dropdownMenu">
+                    <div class="profile-info">
+                        <p id="dropUsername" style="font-weight: 700; font-size: 0.95rem;">Ravindra Chilhate</p>
+                        <p id="dropHandle" style="color: var(--text-muted); font-size: 0.8rem;">@ravindrachilhate</p>
+                        <p id="dropRole" style="font-size: 0.75rem; background: rgba(99, 102, 241, 0.15); color: #6366f1; padding: 2px 6px; border-radius: 4px; width: max-content; margin-top: 4px; font-weight: 600;">Verified Author</p>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 5px 0;">
+                    <button onclick="logout()">🚪 Sign Out Session</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        
+        <div class="ticker-box">
+            <div class="ticker-header">
+                <span class="ticker-title">⚡ LIVE GLOBAL MARKET TICKER</span>
+                <span class="ticker-time" id="liveTickerTime">Live Desk Sync Active</span>
+            </div>
+            <div class="ticker-wrap">
+                <div class="ticker-container" id="tickerDynamicContent"></div>
+            </div>
+        </div>
+
+        <main class="main-workspace">
+            
+            <section class="feed-side">
+                <div class="filter-lane">
+                    <button class="cat-pill active" id="pill-All" onclick="filterCategory('All')">🌐 Global Feed</button>
+                    <button class="cat-pill" id="pill-Tech" onclick="filterCategory('Tech')">💻 Tech</button>
+                    <button class="cat-pill" id="pill-Finance" onclick="filterCategory('Finance')">💰 Finance</button>
+                    <button class="cat-pill" id="pill-Economics" onclick="filterCategory('Economics')">📊 Economics</button>
+                    <button class="cat-pill" id="pill-Politics" onclick="filterCategory('Politics')">🏛️ Politics</button>
+                    <button class="cat-pill" id="pill-Industries" onclick="filterCategory('Industries')">🏭 Industries</button>
+                </div>
+
+                <h2 class="feed-title" id="feedTitle">🌐 Global Feed (All World Blogs)</h2>
+                <div id="blogContainer" style="display: flex; flex-direction: column; gap: 25px;"></div>
+            </section>
+
+            <section class="sidebar-side">
+                <div class="publish-box">
+                    <h2>🚀 Upload Your Thoughts</h2>
+                    <p>Publish articles instantly to global feed</p>
+                    
+                    <form id="blogForm">
+                        <div class="form-group">
+                            <label for="postTitle">Article Headline</label>
+                            <input type="text" id="postTitle" placeholder="Enter headline title..." required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="postCategory">Target Category</label>
+                            <select id="postCategory" required>
+                                <option value="Tech">Tech</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Economics">Economics</option>
+                                <option value="Politics">Politics</option>
+                                <option value="Industries">Industries</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="postContent">Content Body</label>
+                            <textarea id="postContent" placeholder="Type core matter details..." maxlength="500" required></textarea>
+                            <div class="form-footer">
+                                <span class="counter-lbl"><b id="charCount">0</b> / 500 characters</span>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">🚀 Publish Globally</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+    </div> <div class="modal-overlay" id="readMoreModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div id="modalData"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
